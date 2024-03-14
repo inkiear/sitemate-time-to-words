@@ -34,34 +34,18 @@ const numbersMap = {
 
 // expecting time to be a string in the format like '8:15' or '12:30'
 function convertTimeToWords(time) {
-  const hour = time.split(':')[0];
-  const minutes = time.split(':')[1];
+  const [hourStr, minuteStr] = time.split(':');
+  const hour = parseInt(hourStr);
+  const minutes = parseInt(minuteStr);
 
-  if (time === '0:00') {
-    return 'midnight';
-  }
-  if (time === '12:00') {
-    return 'midday';
-  }
-  if (minutes === '00') {
-    return `${numbersMap[hour]} o'clock`;
-  }
-  if (parseInt(minutes) < 30) {
-    return `${numbersMap[minutes]} past ${numbersMap[hour]}`;
-  }
-  if (minutes === '30') {
-    return `half past ${numbersMap[hour]}`;
-  }
-  if (minutes === '45') {
-    return `quarter to ${numbersMap[parseInt(hour) + 1]}`;
-  }
-  if (parseInt(minutes, 12) > 30) {
-    return `${numbersMap[60 - parseInt(minutes)]} to ${
-      numbersMap[parseInt(hour) + 1]
-    }`;
-  }
+  if (time === '0:00') return 'midnight';
+  if (time === '12:00') return 'midday';
+  if (minutes === 0) return `${numbersMap[hour]} o'clock`;
+  if (minutes < 30) return `${numbersMap[minutes]} past ${numbersMap[hour]}`;
+  if (minutes === 30) return `half past ${numbersMap[hour]}`;
+  if (minutes === 45) return `quarter to ${numbersMap[hour + 1]}`;
 
-  return '';
+  return `${numbersMap[60 - minutes]} to ${numbersMap[hour + 1]}`;
 }
 
 module.exports = { convertTimeToWords };
